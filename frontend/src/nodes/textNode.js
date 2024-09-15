@@ -1,27 +1,25 @@
 // textNode.js
 
-import { useState } from 'react';
 import { Handle, Position } from 'reactflow';
 
-export const TextNode = ({ id, data }) => {
-  const [currText, setCurrText] = useState(data?.text || '{{input}}');
+export const TextNode = ({ id, data, onChange }) => {
+  const currText = (data?.text || '{{input}}');
 
-  const handleTextChange = (e) => {
-    setCurrText(e.target.value);
-  };
+  const handleTextChange = (e) =>
+    onChange(id, 'text', e.target.value)
 
   return (
-    <div style={{width: 200, height: 80, border: '1px solid black'}}>
-      <div>
+    <>
+      <div className="heading">
         <span>Text</span>
       </div>
       <div>
         <label>
           Text:
-          <input 
-            type="text" 
-            value={currText} 
-            onChange={handleTextChange} 
+          <input
+            type="text"
+            value={currText}
+            onChange={handleTextChange}
           />
         </label>
       </div>
@@ -30,6 +28,6 @@ export const TextNode = ({ id, data }) => {
         position={Position.Right}
         id={`${id}-output`}
       />
-    </div>
+    </>
   );
 }

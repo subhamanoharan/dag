@@ -5,8 +5,8 @@ import { Handle, Position } from 'reactflow';
 export const LLMNode = ({ id, data }) => {
 
   return (
-    <div style={{width: 200, height: 80, border: '1px solid black'}}>
-      <div>
+    <>
+      <div className="heading">
         <span>LLM</span>
       </div>
       <div>
@@ -29,6 +29,6 @@ export const LLMNode = ({ id, data }) => {
         id={`${id}-prompt`}
         style={{top: `${200/3}%`}}
       />
-    </div>
+    </>
   );
 }

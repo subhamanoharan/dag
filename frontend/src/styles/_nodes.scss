@@ -1,0 +1,14 @@
+.node {
+  .heading {
+    @apply text-center underline;
+  }
+  .react-flow__handle {
+    width: 10px;
+    height: 12px;
+    @apply bg-blue-800;
+  }
+}
+
+.react-flow__edge-path, .react-flow__connection-path {
+  @apply stroke-blue-800;
+}

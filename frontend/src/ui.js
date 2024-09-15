@@ -6,24 +6,14 @@ import { useState, useRef, useCallback } from 'react';
 import ReactFlow, { Controls, Background, MiniMap } from 'reactflow';
 import { useStore } from './store';
 import { shallow } from 'zustand/shallow';
-import { InputNode } from './nodes/inputNode';
-import { LLMNode } from './nodes/llmNode';
-import { OutputNode } from './nodes/outputNode';
-import { TextNode } from './nodes/textNode';
 import { getNode, nodeTypeDesc } from './nodes/nodeFactory';
 
-import 'reactflow/dist/style.css';
 
 const gridSize = 20;
 const proOptions = { hideAttribution: true };
-const nodeTypes = {
-  customInput: InputNode,
-  llm: LLMNode,
-  customOutput: OutputNode,
-  text: TextNode,
-  ...nodeTypeDesc.reduce((acc, {type: t}) =>
+
+const nodeTypes = nodeTypeDesc.reduce((acc, {type: t}) =>
     ({...acc, [t]: getNode(t)}), {})
-};
 
 const selector = (state) => ({
   nodes: state.nodes,

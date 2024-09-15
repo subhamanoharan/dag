@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "styles/_nodes.scss";
 
 body {
   margin: 0;
