@@ -10,7 +10,7 @@ export const NumberNode = ({ id, data, onChange }) => {
 
   return (
     <>
-      <div>
+      <div className="text-center underline">
         <span>Number</span>
       </div>
       <div>

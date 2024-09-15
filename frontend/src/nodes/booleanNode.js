@@ -10,7 +10,7 @@ export const BooleanNode = ({ id, data, onChange }) => {
 
   return (
     <>
-      <div>
+      <div className="text-center underline">
         <span>Boolean</span>
       </div>
       <div>

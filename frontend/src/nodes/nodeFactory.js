@@ -18,7 +18,7 @@ export const getNode = (type) => {
 
     const onChange = (id, f, v) => updateNodeField(id, f, v)
     return (
-      <div style={{width: 200, height: 80, border: '1px solid black'}}>
+      <div className="text-white border rounded bg-red-400 p-2" style={{width: 200, height: 100}}>
         <TypeNode id={id} data={data} onChange={onChange}/>
       </div>
     )
