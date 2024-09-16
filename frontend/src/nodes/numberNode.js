@@ -29,7 +29,7 @@ export const NumberNode = ({ id, data, onChange }) => {
         id={`${id}-output`}
       />
       <Handle
-        type="source"
+        type="target"
         position={Position.Left}
         id={`${id}-output`}
       />
