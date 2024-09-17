@@ -1,27 +1,25 @@
-// textNode.js
+// characterNode.js
 
 import { Handle, Position } from 'reactflow';
 
-export const NumberNode = ({ id, data, onChange }) => {
-  const currNo = (data?.number || '{{input}}');
+export const CharacterNode = ({ id, data, onChange }) => {
+  const currChar = (data?.character || '');
 
-  const handleNumberChange = (e) =>
-    onChange(id, 'number', e.target.value)
+  const handleChange = (e) =>
+    onChange(id, 'character', e.target.value)
 
   return (
     <>
       <div className="heading">
-        <span>Number</span>
+        <span>Character</span>
       </div>
       <div>
-        <label>
-          Number
           <input
-            type="number"
-            value={currNo}
-            onChange={handleNumberChange}
+            type="text"
+            maxLength={1}
+            value={currChar}
+            onChange={handleChange}
           />
-        </label>
       </div>
       <Handle
         type="source"

@@ -11,16 +11,11 @@ export const BooleanNode = ({ id, data, onChange }) => {
   return (
     <>
       <div className="heading">
-        <span>Boolean</span>
-      </div>
-      <div>
-        <label>
-          Boolean:
-          <input
-            type="checkbox"
-            checked={currVal}
-            onChange={handleChange}/>
-        </label>
+        <span className="mr-2">Boolean</span>
+        <input
+          type="checkbox"
+          checked={currVal}
+          onChange={handleChange}/>
       </div>
       <Handle
         type="target"

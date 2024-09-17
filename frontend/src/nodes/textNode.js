@@ -36,14 +36,14 @@ export const TextNode = ({ id, data, onChange }) => {
       </div>
       <div>
         <label>
-          Text:
-          <textarea
-            value={currText}
-            ref={textRef}
-            onChange={onChangeHandler}
-            style={{ resize: 'none', overflow: 'hidden', height: '30px', minHeight: '30px'}}
-          />
+          Text
         </label>
+        <textarea
+          value={currText}
+          ref={textRef}
+          onChange={onChangeHandler}
+          style={{ resize: 'none', overflow: 'hidden', height: '30px', minHeight: '30px'}}
+        />
       </div>
       {
         dynamicHandles.map((h, i) =>

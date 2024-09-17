@@ -9,7 +9,7 @@ export const PipelineToolbar = () => {
         <div style={{ padding: '10px' }}>
             <div style={{ marginTop: '20px', display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
                 {nodeTypeDesc.map(({type, label}) => (
-                  <DraggableNode type={type} label={label} />
+                  <DraggableNode key={type} type={type} label={label} />
                 ))}
             </div>
         </div>

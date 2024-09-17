@@ -1,6 +1,11 @@
 .node {
+  @apply text-blue-800;
   .heading {
-    @apply text-center underline;
+    @apply text-center font-bold text-blue-800;
+  }
+
+  input {
+    @apply my-1;
   }
   .react-flow__handle {
     width: 10px;
