@@ -6,13 +6,13 @@ import { useState, useRef, useCallback } from 'react';
 import ReactFlow, { Controls, Background, MiniMap } from 'reactflow';
 import { useStore } from './store';
 import { shallow } from 'zustand/shallow';
-import { getNode, nodeTypeDesc } from './nodes/nodeFactory';
-
+import { getNode } from './nodes/nodeFactory';
+import {nodeDefinitions} from './nodes/nodeDefinitions'
 
 const gridSize = 20;
 const proOptions = { hideAttribution: true };
 
-const nodeTypes = nodeTypeDesc.reduce((acc, {type: t}) =>
+const nodeTypes = nodeDefinitions.reduce((acc, {type: t}) =>
     ({...acc, [t]: getNode(t)}), {})
 
 const selector = (state) => ({
@@ -72,7 +72,7 @@ export const PipelineUI = () => {
             addNode(newNode);
           }
         },
-        [reactFlowInstance]
+        [reactFlowInstance, addNode, getNodeID]
     );
 
     const onDragOver = useCallback((event) => {
