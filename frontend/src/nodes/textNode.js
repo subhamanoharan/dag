@@ -19,12 +19,10 @@ export const TextNode = ({ id, data, onChange }) => {
 
   const handleTextChange = (text) => {
     onChange(id, 'text', text)
-    const matches = text.match(/{{\w+}}/)
-    const isHandleVariable = matches && matches[0] === text
-    if(isHandleVariable)
-      setDynamicHandles([...dynamicHandles,
-        text.replaceAll('}', '').replaceAll('{', '')
-      ])
+    const matches = text.match(/{{\w+}}/g)
+    setDynamicHandles((matches || []).map(m =>
+      m.replaceAll('}', '').replaceAll('{', '')
+    ))
   }
 
   useEffect(() => {
@@ -54,10 +52,9 @@ export const TextNode = ({ id, data, onChange }) => {
           type="target"
           position={Position.Left}
           id={`${id}-input-${i}`}
-          style={{top: `${((100 * (i+1))/4) % 100}%`}}
+          style={{top: `${((100 * (i + 1))/(dynamicHandles.length))}%`}}
         />)
       }
-
       <Handle
         type="source"
         position={Position.Right}

@@ -36,14 +36,11 @@ export const useStore = create((set, get) => ({
       });
     },
     onConnect: (connection) => {
-      console.log('onConnect', connection)
       set({
         edges: addEdge({...connection, type: 'smoothstep', animated: true, markerEnd: {type: MarkerType.Arrow, height: '20px', width: '20px'}}, get().edges),
       });
     },
     updateNodeField: (nodeId, fieldName, fieldValue) => {
-      console.log('updateNodeField', nodeId, fieldName, fieldValue)
-
       set({
         nodes: get().nodes.map((node) => {
           if (node.id === nodeId) {
