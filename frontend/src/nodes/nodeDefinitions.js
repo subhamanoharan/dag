@@ -128,7 +128,7 @@ export const nodeDefinitions = [
     componentData: {
       heading: 'Text',
       fields: [
-        {label: 'Text', component: DynamicTextInputField, field: 'text' },
+        {label: 'Text', component: DynamicTextInputField, field: 'text', dataMapper: (data) => (data?.text || '{{input}}') },
       ],
       handles:[
         {type: "source", position: Position.Right, id: (id) => `${id}-output`}
