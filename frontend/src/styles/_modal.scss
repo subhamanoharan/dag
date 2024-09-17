@@ -1,0 +1,36 @@
+.modal-wrapper {
+    @apply absolute h-full top-0 z-50 w-full flex justify-center items-center;
+    background: rgba(0,0,0,0.5);
+    overflow-y:scroll;
+
+    .modal {
+        @apply absolute bg-white shadow-lg;
+        overflow: scroll;
+        max-height: 100%;
+        margin: 10px;
+
+        &.small {
+            @apply max-w-lg;
+        }
+        .modal-exit {
+            @apply relative p-2 float-right	text-white;
+        }
+        .modal-content {
+          .header {
+            @apply p-2 bg-green-600 tracking-wide text-center text-white font-bold;
+          }
+          .error {
+            @apply bg-white text-red-400
+          }
+          .content {
+            @apply p-4 text-center text-green-600 font-bold;
+          }
+          .row {
+            @apply grid grid-cols-2;
+            .heading {
+              @apply text-blue-600;
+            }
+          }
+        }
+    }
+}

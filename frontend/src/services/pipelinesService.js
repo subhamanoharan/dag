@@ -6,4 +6,6 @@ const parse = ({ nodes, edges }) =>
   axiosInstance.post('/pipelines/parse', {nodes, edges})
     .then(r => r.data)
 
-export default { parse }
+const service = { parse }
+
+export default service;
