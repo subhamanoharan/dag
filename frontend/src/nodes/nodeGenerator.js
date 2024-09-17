@@ -32,7 +32,6 @@ export const getNode = (type) => {
                 <label> {label}</label>
                 <Field
                   data={dataMapper ? {[field]: dataMapper(data, id)} : data}
-                  id={id}
                   onChange={(f, v) => onChange(id, f, v)}
                   field={field}
                   onHandlesUpdate={setDynamicHandles}
