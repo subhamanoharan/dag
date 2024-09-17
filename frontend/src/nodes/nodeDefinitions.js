@@ -80,7 +80,7 @@ export const nodeDefinitions = [
     label: 'Boolean',
     componentData: {
       heading: 'Boolean',
-      fields: [{label: 'Boolean', component: BooleanField }],
+      fields: [{label: 'Boolean', component: BooleanField, field: 'booleanVal' }],
       handles:[
         {type: "target", position: Position.Left, id: (id) => `${id}-output`}
       ]
@@ -128,7 +128,7 @@ export const nodeDefinitions = [
     componentData: {
       heading: 'Text',
       fields: [
-        {label: 'Text', component: DynamicTextInputField },
+        {label: 'Text', component: DynamicTextInputField, field: 'text' },
       ],
       handles:[
         {type: "source", position: Position.Right, id: (id) => `${id}-output`}

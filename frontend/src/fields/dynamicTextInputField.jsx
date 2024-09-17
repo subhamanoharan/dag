@@ -1,9 +1,9 @@
 import { useRef } from 'react';
 
-export const DynamicTextInputField = ({data, onChange, onHandlesUpdate}) => {
+export const DynamicTextInputField = ({data, field, onChange, onHandlesUpdate}) => {
   const textRef = useRef();
 
-  const currText = (data?.text || '');
+  const currText = ((data || {})[field] || '');
 
   const onChangeHandler = (e) => {
    const target = e.target;
@@ -13,7 +13,7 @@ export const DynamicTextInputField = ({data, onChange, onHandlesUpdate}) => {
   };
 
   const handleTextChange = (text) => {
-    onChange('text', text)
+    onChange(field, text)
     const matches = text.match(/{{\w+}}/g)
     onHandlesUpdate((matches || []).map(m =>
       m.replaceAll('}', '').replaceAll('{', '')

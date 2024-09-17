@@ -6,7 +6,7 @@ import { useState, useRef, useCallback } from 'react';
 import ReactFlow, { Controls, Background, MiniMap } from 'reactflow';
 import { useStore } from './store';
 import { shallow } from 'zustand/shallow';
-import { nodeGenerator } from './nodes/nodeGenerator';
+import { getNode } from './nodes/nodeGenerator';
 import {nodeDefinitions} from './nodes/nodeDefinitions'
 
 const gridSize = 20;

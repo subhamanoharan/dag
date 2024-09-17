@@ -1,8 +1,8 @@
-export const BooleanField = ({ data, onChange }) => {
-  const currVal = data?.booleanVal || false;
+export const BooleanField = ({ data, onChange, field }) => {
+  const currVal = (data || {})[field] || false;
 
   const handleChange = (e) =>
-    onChange('booleanVal', e.target.checked)
+    onChange(field, e.target.checked)
 
   return (
     <input
