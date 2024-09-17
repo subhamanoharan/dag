@@ -14,7 +14,7 @@ const isDAG = (directedGraph) =>
 const parse = (nodes, edges) => {
   const initialGraph = nodes.reduce((acc, id) => ({...acc, [id]: []}), {})
   const directedGraph = edges.reduce((acc, {source, target}) =>
-    ({...acc, [source]: [...(acc.source || []), target]}), initialGraph)
+    ({...acc, [source]: [...(acc[source] || []), target]}), initialGraph)
   return {
     num_nodes: nodes.length,
     num_edges: edges.length,

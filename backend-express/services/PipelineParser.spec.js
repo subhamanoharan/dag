@@ -108,4 +108,17 @@ describe("PipelineParser", () => {
       expect(result.num_edges).toEqual(5)
       expect(result.is_dag).toEqual(false)
     });
+
+    test('when there are multiple nodes and edges', () => {
+      const nodes = [ 'number-1', 'text-1', 'llm-1', 'text-2' ]
+      const edges = [ { source: 'text-1', target: 'number-1' },
+        { source: 'number-1', target: 'llm-1' },
+        { source: 'llm-1', target: 'number-1' },
+        { source: 'number-1', target: 'text-2' } ]
+      const result = PipelineParser.parse(nodes, edges)
+      expect(result.num_nodes).toEqual(4)
+      expect(result.num_edges).toEqual(4)
+      expect(result.is_dag).toEqual(false)
+    });
+
 });
