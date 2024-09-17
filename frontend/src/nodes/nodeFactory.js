@@ -1,39 +1,200 @@
 // customNode.js
 import { shallow } from 'zustand/shallow';
+import { useEffect, useState } from 'react';
+import { Handle, Position, useUpdateNodeInternals } from 'reactflow';
 
 import { useStore } from '../store';
-import { TextNode } from './textNode'
-import { NumberNode } from './numberNode'
-import { OptionNode } from './optionNode'
-import { BooleanNode } from './booleanNode'
-import { OutputNode } from './outputNode';
-import { InputNode } from './inputNode';
-import { LLMNode } from './llmNode';
-import { CharacterNode } from './characterNode';
-import { PriceNode } from './priceNode';
+import { NumberField } from '../fields/numberField';
+import { TextDisplayField } from '../fields/textDisplayField';
+import { TextInputField } from '../fields/textInputField';
+import { SelectTypeInputField } from '../fields/selectTypeInputField';
+import { BooleanField } from '../fields/booleanField';
+import { DynamicTextInputField } from '../fields/dynamicTextInputField';
 
 export const nodeTypeDesc = [
-  { type: 'llm', component: LLMNode, label: 'LLM' },
-  { type: 'customInput', component: InputNode, label: 'Input' },
-  { type: 'customOutput', component: OutputNode, label: 'Output' },
-  { type: 'text', component: TextNode, label: 'Text' },
-  { type: 'number', component: NumberNode, label: 'Number' },
-  { type: 'boolean', component: BooleanNode, label: 'Boolean' },
-  { type: 'options', component: OptionNode, label: 'Options' },
-  { type: 'character', component: CharacterNode, label: 'Character' },
-  { type: 'price', component: PriceNode, label: 'Price' },
+  {
+    type: 'number',
+    label: 'Number',
+    componentData: {
+      heading: 'Number',
+      fields: [{label: 'Number', component: NumberField, dataMapper: data => data?.number || '{{input}}', field: 'number'}],
+      handles:[
+        {type: "source", position: Position.Right, id: (id) => `${id}-input`},
+        {type: "target", position: Position.Left, id: (id) => `${id}-output`}
+      ]
+    }
+  },
+  {
+    type: 'llm',
+    label: 'LLM',
+    componentData: {
+      heading: 'LLM',
+      fields: [{label:'', component: () => <TextDisplayField data="This is a LLM"/>}],
+      handles:[
+        {type: "source", position: Position.Right, id: (id) => `${id}-response`},
+        {type: "target", position: Position.Left, id: (id) => `${id}-system`, style: {top: `${100/3}%`}},
+        {type: "target", position: Position.Left, id: (id) => `${id}-prompt`, style: {top: `${200/3}%`}}
+      ]
+    }
+  },
+  {
+    type: 'customInput',
+    label: 'Input',
+    componentData: {
+      heading: 'Input',
+      fields: [
+        {
+          label: 'Name',
+          component: TextInputField,
+          field: 'inputName',
+          dataMapper: (data, id) => (data?.inputName || id.replace('customInput-', 'input_'))
+        },
+        {
+          label: 'Type',
+          component: SelectTypeInputField,
+          field: 'inputType'
+        }
+      ],
+      handles:[
+        {type: "source", position: Position.Right, id: (id) => `${id}-value`},
+      ]
+    }
+  },
+  {
+    type: 'customOutput',
+    label: 'Output',
+    componentData: {
+      heading: 'Output',
+      fields: [
+        {
+          label: 'Name',
+          component: TextInputField,
+          field: 'outputName',
+          dataMapper: (data, id) => (data?.outputName || id.replace('customOutput-', 'output_'))
+        },
+        {label: 'Type', component: SelectTypeInputField, field: 'outputType'}
+      ],
+      handles:[
+        {type: "target", position: Position.Left, id: (id) => `${id}-value`},
+      ]
+    }
+  },
+  {
+    type: 'boolean',
+    label: 'Boolean',
+    componentData: {
+      heading: 'Boolean',
+      fields: [{label: 'Boolean', component: BooleanField }],
+      handles:[
+        {type: "target", position: Position.Left, id: (id) => `${id}-output`}
+      ]
+    }
+  },
+  {
+    type: 'options',
+    label: 'Options',
+    componentData: {
+      heading: 'Options',
+      fields: [{label: 'Choose', component: SelectTypeInputField }],
+      handles:[
+        {type: "target", position: Position.Left, id: (id) => `${id}-output`}
+      ]
+    }
+  },
+  {
+    type: 'price',
+    label: 'Price',
+    componentData: {
+      heading: 'Price',
+      fields: [{label: '$', component: NumberField, field: 'price' }],
+      handles:[
+        {type: "target", position: Position.Left, id: (id) => `${id}-output`}
+      ]
+    }
+  },
+  {
+    type: 'counter',
+    label: 'Counter',
+    componentData: {
+      heading: 'Count',
+      fields: [
+        {label: 'Activity', component: TextInputField, field: 'activity' },
+        {label: 'No. of times', component: NumberField, field: 'counter' }
+      ],
+      handles:[
+        {type: "target", position: Position.Left, id: (id) => `${id}-output`}
+      ]
+    }
+  },
+  {
+    type: 'text',
+    label: 'Text',
+    componentData: {
+      heading: 'Text',
+      fields: [
+        {label: 'Text', component: DynamicTextInputField },
+      ],
+      handles:[
+        {type: "source", position: Position.Right, id: (id) => `${id}-output`}
+      ]
+    }
+  },
 ]
 
 export const getNode = (type) => {
-  const TypeNode = nodeTypeDesc.find(({type: t}) => t=== type).component
+  const {componentData: {heading, fields, handles}} = nodeTypeDesc.find(({type: t}) => t=== type)
   const ConnectedTypeNode = ({id, data}) => {
+    const [dynamicHandles, setDynamicHandles] = useState([]);
     const selector = (state) => ({ updateNodeField: state.updateNodeField });
     const { updateNodeField } = useStore(selector, shallow);
+    const updateNodeInternals = useUpdateNodeInternals();
+
+    useEffect(() => {
+      updateNodeInternals(id)
+    }, [dynamicHandles, id, updateNodeInternals])
 
     const onChange = (id, f, v) => updateNodeField(id, f, v)
+
     return (
       <div className={`node node-${type} border rounded bg-red-200 p-3`} style={{width: 200}}>
-        <TypeNode id={id} data={data} onChange={onChange}/>
+        <div className="heading">
+          <span>{heading}</span>
+        </div>
+        <div className="content">
+          {
+            fields.map(({label, component: Field, field, dataMapper}, i) =>
+              <div key={i}>
+                <label> {label}</label>
+                <Field
+                  data={dataMapper ? {[field]: dataMapper(data, id)} : data}
+                  id={id}
+                  onChange={(f, v) => onChange(id, f, v)}
+                  field={field}
+                  onHandlesUpdate={setDynamicHandles}
+                />
+              </div>
+            )
+          }
+        </div>
+        {handles.map(h =>
+          <Handle
+            key={h.id()}
+            type={h.type}
+            position={h.position}
+            id={h.id()}
+            style={h.style || {}}
+          />
+        )}
+        {
+          dynamicHandles.map((h, i) =>
+          <Handle
+            key={`target-${h}-${i}`}
+            type="target"
+            position={Position.Left}
+            id={`${id}-input-${i}`}
+            style={{top: `${((100 * (i + 1))/(dynamicHandles.length))}%`}}
+          />)
+        }
       </div>
     )
   };
