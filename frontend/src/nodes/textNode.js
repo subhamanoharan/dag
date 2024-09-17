@@ -1,12 +1,28 @@
 // textNode.js
+import { useEffect, useState } from 'react';
 
-import { Handle, Position } from 'reactflow';
+import { Handle, Position, useUpdateNodeInternals } from 'reactflow';
 
 export const TextNode = ({ id, data, onChange }) => {
-  const currText = (data?.text || '{{input}}');
+  const [dynamicHandles, setDynamicHandles] = useState([]);
 
-  const handleTextChange = (e) =>
-    onChange(id, 'text', e.target.value)
+  const updateNodeInternals = useUpdateNodeInternals();
+  const currText = (data?.text || '');
+
+  const handleTextChange = (e) => {
+    const text = e.target.value
+    onChange(id, 'text', text)
+    const matches = text.match(/{{\w+}}/)
+    const isHandleVariable = matches && matches[0] === text
+    if(isHandleVariable)
+      setDynamicHandles([...dynamicHandles,
+        text.replaceAll('}', '').replaceAll('{', '')
+      ])
+  }
+
+  useEffect(() => {
+    updateNodeInternals(id)
+  }, [dynamicHandles])
 
   return (
     <>
@@ -23,6 +39,17 @@ export const TextNode = ({ id, data, onChange }) => {
           />
         </label>
       </div>
+      {
+        dynamicHandles.map((h, i) =>
+        <Handle
+          key={`target-${h}-${i}`}
+          type="target"
+          position={Position.Left}
+          id={`${id}-input-${i}`}
+          style={{top: `${((100 * (i+1))/4) % 100}%`}}
+        />)
+      }
+
       <Handle
         type="source"
         position={Position.Right}
