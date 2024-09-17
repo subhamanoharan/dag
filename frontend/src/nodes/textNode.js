@@ -1,16 +1,23 @@
 // textNode.js
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 import { Handle, Position, useUpdateNodeInternals } from 'reactflow';
 
 export const TextNode = ({ id, data, onChange }) => {
   const [dynamicHandles, setDynamicHandles] = useState([]);
+  const textRef = useRef();
+
+   const onChangeHandler = (e) => {
+    const target = e.target;
+    handleTextChange(target.value)
+    textRef.current.style.height = "30px";
+    textRef.current.style.height = `${target.scrollHeight}px`;
+   };
 
   const updateNodeInternals = useUpdateNodeInternals();
   const currText = (data?.text || '');
 
-  const handleTextChange = (e) => {
-    const text = e.target.value
+  const handleTextChange = (text) => {
     onChange(id, 'text', text)
     const matches = text.match(/{{\w+}}/)
     const isHandleVariable = matches && matches[0] === text
@@ -22,7 +29,7 @@ export const TextNode = ({ id, data, onChange }) => {
 
   useEffect(() => {
     updateNodeInternals(id)
-  }, [dynamicHandles])
+  }, [dynamicHandles, id, updateNodeInternals])
 
   return (
     <>
@@ -32,10 +39,11 @@ export const TextNode = ({ id, data, onChange }) => {
       <div>
         <label>
           Text:
-          <input
-            type="text"
+          <textarea
             value={currText}
-            onChange={handleTextChange}
+            ref={textRef}
+            onChange={onChangeHandler}
+            style={{ resize: 'none', overflow: 'hidden', height: '30px', minHeight: '30px'}}
           />
         </label>
       </div>
