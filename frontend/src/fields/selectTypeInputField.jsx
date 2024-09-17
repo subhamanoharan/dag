@@ -1,5 +1,5 @@
 export const SelectTypeInputField = ({data, field, onChange}) => {
-  const inputType = data[field] || 'Text';
+  const inputType = (data || {})[field] || 'Text';
 
   const handleTypeChange = (e) =>
     onChange(field, e.target.value)
